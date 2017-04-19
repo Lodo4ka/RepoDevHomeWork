@@ -14,7 +14,7 @@ public class QuickandBubbleSort {
         System.out.println(Arrays.toString(arrays1));
         fillInArray(arrays2);
         BubbleSort bubbleSort = new BubbleSort();
-        BubbleSort.bubbleSortTwo(arrays2);
+        bubbleSort.bubbleSortTwo(arrays2);
         System.out.println(Arrays.toString(arrays2));
     }
 
