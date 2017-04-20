@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberFour.iml" filepath="$PROJECT_DIR$/HomeWorkNumberFour.iml" />
       <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberThree.iml" filepath="$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberThree.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberTwo.iml" filepath="$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberTwo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberTwo/HomeWorkNumberTwo.iml" filepath="$PROJECT_DIR$/HomeWorkNumberTwo/HomeWorkNumberTwo.iml" />
       <module fileurl="file://$PROJECT_DIR$/RepoDevHomeWork.iml" filepath="$PROJECT_DIR$/RepoDevHomeWork.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestModule/TestModule.iml" filepath="$PROJECT_DIR$/TestModule/TestModule.iml" />
     </modules>
