@@ -12,8 +12,20 @@ public class EntryPoint {
         user1.setName("Vasya");
         User user2 = new User();
         user2.setName("Vasya");
+        User user3 = new User();
+        user3.setName("Petya");
 
-        System.out.println("user1 hash = " + user1.hashCode());
-        System.out.println("user2 hash = " + user2.hashCode());
+
+        similarityObjects(user1, user2);
+        similarityObjects(user1,user3);
+    }
+
+    public static void similarityObjects(User user1, User user2) {
+        if(user1.equals(user2)){
+            System.out.println("That's the same objects and hashcode similar");
+        }
+        else {
+            System.out.println("That's different objects and hashcode various");
+        }
     }
 }

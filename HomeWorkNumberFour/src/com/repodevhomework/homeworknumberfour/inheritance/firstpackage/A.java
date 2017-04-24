@@ -11,6 +11,10 @@ public class A {
         this.name = name;
     }
 
+    public A() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -26,4 +30,5 @@ public class A {
     int calculatenumber(int a, int b){
         return a + b;
     }
+
 }
