@@ -5,9 +5,10 @@ import factory.Developer;
 /**
  * Created by lodo4ka on 01/05/2017.
  */
-public class PhpDeveloper implements Developer{
+public class PhpDeveloper extends Developer{
+
     @Override
-    public void writeCode() {
-        System.out.println("Php developer writes php code...");
+    public void work() {
+        System.out.println("I'm phpdeveloper, i'm write code");
     }
 }

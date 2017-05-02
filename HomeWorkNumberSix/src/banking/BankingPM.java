@@ -1,13 +1,16 @@
 package banking;
 
 import factory.ProjectManager;
+import factory.ProjectTeamFactory;
 
 /**
  * Created by lodo4ka on 01/05/2017.
  */
-public class BankingPM implements ProjectManager {
+public class BankingPM extends ProjectManager {
+
+
     @Override
-    public void managerProject() {
-        System.out.println("Banking PM manages banking project...");
+    public void work() {
+        System.out.println("I'm BankingPM, i'm manage project");
     }
 }

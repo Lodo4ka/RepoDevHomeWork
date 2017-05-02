@@ -1,26 +1,28 @@
 package website;
 
-import factory.Developer;
-import factory.ProjectManager;
+import banking.BankingPM;
+import banking.JavaDeveloper;
+import banking.QATester;
 import factory.ProjectTeamFactory;
-import factory.Tester;
+import factory.Worker;
 
 /**
  * Created by lodo4ka on 01/05/2017.
  */
-public class WebsiteTeamFactory implements ProjectTeamFactory{
-    @Override
-    public Developer getDeveloper() {
-        return new PhpDeveloper();
-    }
+public class WebsiteTeamFactory extends ProjectTeamFactory{
 
     @Override
-    public Tester getTester() {
-        return new ManualTester();
+    public Worker getTeamMember(String member) {
+        if("developer".equals(member)){
+            return new PhpDeveloper();
+        }
+        else if("manager".equals(member)){
+            return new WebsitePM();
+        }
+        else if("tester".equals(member)){
+            return new ManualTester();
+        }
+        return null;
+    }
     }
 
-    @Override
-    public ProjectManager getProjectManager() {
-        return new WebsitePM();
-    }
-}

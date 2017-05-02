@@ -5,9 +5,10 @@ import factory.Developer;
 /**
  * Created by lodo4ka on 01/05/2017.
  */
-public class JavaDeveloper implements Developer {
+public class JavaDeveloper extends Developer {
+
     @Override
-    public void writeCode() {
-        System.out.println("Java developer writes Java code...");
+    public void work() {
+        System.out.println("I'm javadeveloper, i'm write code");
     }
 }

@@ -1,26 +1,23 @@
 package banking;
 
-import factory.Developer;
-import factory.ProjectManager;
-import factory.ProjectTeamFactory;
-import factory.Tester;
+import factory.*;
 
 /**
  * Created by lodo4ka on 01/05/2017.
  */
-public class BankingTeamFactory implements ProjectTeamFactory{
-    @Override
-    public Developer getDeveloper() {
-        return new JavaDeveloper();
-    }
+public class BankingTeamFactory extends ProjectTeamFactory{
 
     @Override
-    public Tester getTester() {
-        return new QATester();
-    }
-
-    @Override
-    public ProjectManager getProjectManager() {
-        return new BankingPM();
+    public Worker getTeamMember(String member) {
+        if("developer".equals(member)){
+            return new JavaDeveloper();
+        }
+        else if("manager".equals(member)){
+            return new BankingPM();
+        }
+        else if("tester".equals(member)){
+            return new QATester();
+        }
+        return null;
     }
 }
