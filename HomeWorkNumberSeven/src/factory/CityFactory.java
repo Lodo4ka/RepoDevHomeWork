@@ -1,5 +1,6 @@
 package factory;
 
+import exception.CityNotFoundException;
 import model.City;
 import model.London;
 import model.Moscow;
@@ -10,16 +11,23 @@ import model.NY;
  */
 public class CityFactory {
 
-    public City createCity(String type){
-        if("london".equalsIgnoreCase(type)){
-            return new London();
+    public City createCity(String type) throws Exception{
+
+        try {
+            if ("london".equalsIgnoreCase(type)) {
+                return new London();
+            } else if ("moscow".equalsIgnoreCase(type)) {
+                return new Moscow();
+            } else if ("new york".equalsIgnoreCase(type) || "ny".equalsIgnoreCase(type)) {
+                return new NY();
+            }
         }
-        else if("moscow".equalsIgnoreCase(type)){
-            return new Moscow();
+        catch (CityNotFoundException e){
+            e.getMessage();
         }
-        else if("new york".equalsIgnoreCase(type) || "ny".equalsIgnoreCase(type)){
-            return new NY();
+       finally {
+
         }
         return null;
-    };
+    }
 }
