@@ -11,9 +11,9 @@ import model.NY;
  */
 public class CityFactory {
 
-    public City createCity(String type) throws Exception{
+    public City createCity(String type) throws CityNotFoundException{
 
-        try {
+
             if ("london".equalsIgnoreCase(type)) {
                 return new London();
             } else if ("moscow".equalsIgnoreCase(type)) {
@@ -21,13 +21,8 @@ public class CityFactory {
             } else if ("new york".equalsIgnoreCase(type) || "ny".equalsIgnoreCase(type)) {
                 return new NY();
             }
-        }
-        catch (CityNotFoundException e){
-            e.getMessage();
-        }
-       finally {
-
-        }
-        return null;
+            else {
+                throw new CityNotFoundException();
+            }
     }
 }

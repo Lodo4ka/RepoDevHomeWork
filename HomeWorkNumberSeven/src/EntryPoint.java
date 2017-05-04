@@ -12,14 +12,7 @@ public class EntryPoint {
         CityFactory cityFactory = new CityFactory();
 
         String input = scanner.nextLine();
-        City city = null;
-        try {
-            city = cityFactory.createCity(input);
-        } catch (CityNotFoundException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        City city = cityFactory.createCity(input);
         city.getName();
         city.getPopulation();
         city.getArea();
