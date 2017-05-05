@@ -7,8 +7,15 @@ import java.io.IOException;
  */
 public class CityNotFoundException extends RuntimeException {
 
+    String type;
+
+
+    public CityNotFoundException(String type) {
+        this.type = type;
+    }
+
     @Override
     public String getMessage() {
-        return ("That city isn't found");
+        return ("That city \""+ type +"\" isn't found");
     }
 }

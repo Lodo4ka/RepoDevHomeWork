@@ -22,7 +22,7 @@ public class CityFactory {
                 return new NY();
             }
             else {
-                throw new CityNotFoundException();
+                throw new CityNotFoundException(type);
             }
     }
 }
