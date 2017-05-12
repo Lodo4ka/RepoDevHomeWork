@@ -1,38 +1,44 @@
 package sort.cocktailsort;
 
-/**
- * Created by lodo4ka on 08/05/2017.
- */
+import java.util.List;
+
 public class CocktailSort {
 
-    public static Integer[] cocktailSort(Integer [] array){
-        boolean swapped = true;
-        int i = 0;
-        int j = array.length-1;
-        while (i < j && swapped){
-            swapped =false;
-            for (int k = i; k < j; k++) {
-                if(array[k] > array[k+1]){
-                    int temp = array[k];
-                    array[k] = array[k+1];
-                    array[k+1] = temp;
-                    swapped = true;
-                }
-            }
-            j--;
-            if(swapped){
-                swapped =false;
-                for (int k = j; k > i; k--) {
-                    if(array[k] < array[k-1]){
-                        int temp = array[k];
-                        array[k] = array[k-1];
-                        array[k-1] = temp;
-                        swapped = true;
-                    }
-                }
-            }
-            i++;
-        }
-        return array;
+    public static List<Integer> cocktailSort(List<Integer> list){
+       boolean swapped = true;
+       int i = 0;
+       int j = list.size()-1;
+
+       while (i < j && swapped){
+           swapped =false;
+
+           for (int k = i; k < j; k++) {
+               if (list.get(k) > list.get(k + 1)){
+
+                   int k1 = list.get(k);
+                   int k2 = list.get(k + 1);
+                   int temp = k1;
+                   k1 = k2;
+                   k2 = temp;
+                   swapped =true;
+               }
+           }
+           j--;
+           if (swapped){
+               swapped = false;
+               for (int k = j; k > i; k--) {
+                   if(list.get(k) < list.get(k-1)){
+                       int k1 = list.get(k);
+                       int k2 = list.get(k - 1);
+                       int temp = k1;
+                       k1 = k2;
+                       k2 = temp;
+                       swapped =true;
+                   }
+               }
+           }
+           i++;
+       }
+       return list;
     }
 }

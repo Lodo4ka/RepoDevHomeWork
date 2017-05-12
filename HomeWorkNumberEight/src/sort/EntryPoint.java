@@ -4,21 +4,25 @@ import sort.insertionsort.InsertionSort;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EntryPoint {
     public static void main(String[] args) {
 
 
-        Integer [] arrayInt = new Integer[100];
+        List<Integer> arrayInt = new ArrayList<Integer>();
         arrayInsert(arrayInt);
         InsertionSort.insertIntoSort(arrayInt);
-        System.out.println(Arrays.toString(arrayInt));
+        for (Integer i: arrayInt
+             ) {
+            System.out.print(i + " ");
+        }
     }
 
-    public static Integer [] arrayInsert(Integer [] array){
+    public static List<Integer> arrayInsert(List<Integer> array){
 
-        for (int i = 0; i < array.length; i++) {
-            array[i] = Math.abs((int)(Math.random()*100));
+        for (int i = 0; i < 10; i++) {
+           array.add(Math.abs((int)(Math.random()*100)));
         }
         return array;
     }

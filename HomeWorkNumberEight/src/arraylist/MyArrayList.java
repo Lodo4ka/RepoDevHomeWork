@@ -5,95 +5,26 @@ import java.util.*;
 /**
  * Created by lodo4ka on 08/05/2017.
  */
-public class MyArrayList implements Collection{
+public class MyArrayList<E> implements Collection<E>{
 
 
 
-    private Object[] myStore;
-    private int actSize = 0;
 
-    public MyArrayList() {
-        myStore = new Object[10];
-    }
+    private E[] values;
 
-    public MyArrayList(Object[] o){
-        myStore = o;
+     public MyArrayList(){
+        values = (E[]) new Object[0];
     }
 
 
-    public Object get(int index){
-        if(index < actSize){
-            return myStore[index];
-        }
-        else {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+    public E get(int index){
+         return values[index];
     }
 
-
-    public void add(Object obj){
-        if(myStore.length-actSize <= 5){
-            increaseListSize();
-
-        }
-        myStore[actSize++] = obj;
-    }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public boolean retainAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection c) {
-        return false;
-    }
-
-    private void increaseListSize() {
-        myStore = Arrays.copyOf(myStore, myStore.length*2);
-        System.out.println("\nNew length: " +myStore.length);
-    }
-
-    public Object remove(int index){
-        if(index < actSize){
-            Object obj = myStore[index];
-            myStore[index] = null;
-            int tmp = index;
-            while (tmp < actSize){
-                myStore[tmp] = myStore[tmp+1];
-                myStore[tmp+1] = null;
-                tmp++;
-            }
-            actSize--;
-            return obj;
-        }
-        else {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-    }
-
-    public int size(){
-        return actSize;
+    public int size() {
+        return 0;
     }
 
     @Override
@@ -107,7 +38,7 @@ public class MyArrayList implements Collection{
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<E> iterator() {
         return null;
     }
 
@@ -117,7 +48,54 @@ public class MyArrayList implements Collection{
     }
 
     @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
+    public <T> T[] toArray(T[] a) {
+        return null;
     }
+
+    @Override
+    public boolean add(E e) {
+
+         try{
+             E[] temp = values;
+             values = (E[]) new Object[temp.length + 1];
+             System.arraycopy(temp, 0, values, 0, temp.length);
+             values[values.length - 1] = e;
+             return true;
+         }
+         catch (ClassCastException ex){
+             ex.printStackTrace();
+         }
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
 }
