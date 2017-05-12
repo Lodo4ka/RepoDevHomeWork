@@ -14,12 +14,9 @@ public class CocktailSort {
 
            for (int k = i; k < j; k++) {
                if (list.get(k) > list.get(k + 1)){
-
-                   int k1 = list.get(k);
-                   int k2 = list.get(k + 1);
-                   int temp = k1;
-                   k1 = k2;
-                   k2 = temp;
+                   Integer temp = list.get(k);
+                   list.set(k, list.get(k+1));
+                   list.set(k+1, temp);
                    swapped =true;
                }
            }
@@ -28,11 +25,10 @@ public class CocktailSort {
                swapped = false;
                for (int k = j; k > i; k--) {
                    if(list.get(k) < list.get(k-1)){
-                       int k1 = list.get(k);
-                       int k2 = list.get(k - 1);
-                       int temp = k1;
-                       k1 = k2;
-                       k2 = temp;
+
+                       Integer temp=list.get(k);
+                       list.set(k, list.get(k-1));
+                       list.set(k-1, temp);
                        swapped =true;
                    }
                }

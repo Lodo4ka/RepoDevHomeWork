@@ -1,10 +1,8 @@
 package sort;
 
 import sort.cocktailsort.CocktailSort;
-import sort.cocktailsort.CocktailSort2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ public class EntryPoint2 {
 
         List<Integer> integerList = new ArrayList<>();
         arrayInsert(integerList);
-        CocktailSort2.cocktailSort(integerList);
+        CocktailSort.cocktailSort(integerList);
         for (Integer i: integerList
              ) {
             System.out.print(i + " ");
