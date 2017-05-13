@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberFive/HomeWorkNumberFive.iml" filepath="$PROJECT_DIR$/HomeWorkNumberFive/HomeWorkNumberFive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberEight/HomeWorkNumberEight.iml" filepath="$PROJECT_DIR$/HomeWorkNumberEight/HomeWorkNumberEight.iml" />
       <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberFour/HomeWorkNumberFour.iml" filepath="$PROJECT_DIR$/HomeWorkNumberFour/HomeWorkNumberFour.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberSeven/HomeWorkNumberSeven.iml" filepath="$PROJECT_DIR$/HomeWorkNumberSeven/HomeWorkNumberSeven.iml" />
       <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberSix/HomeWorkNumberSix.iml" filepath="$PROJECT_DIR$/HomeWorkNumberSix/HomeWorkNumberSix.iml" />
       <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberThree.iml" filepath="$PROJECT_DIR$/HomeWorkNumberThree/HomeWorkNumberThree.iml" />
       <module fileurl="file://$PROJECT_DIR$/HomeWorkNumberTwo/HomeWorkNumberTwo.iml" filepath="$PROJECT_DIR$/HomeWorkNumberTwo/HomeWorkNumberTwo.iml" />
