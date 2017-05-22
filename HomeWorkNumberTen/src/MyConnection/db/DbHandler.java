@@ -42,7 +42,7 @@ public class DbHandler {
     }
 
 
-    public void execute_createTable(String tableName, Map namesTypesMap) {
+    public void execute_createTable(java.lang.String tableName, Map namesTypesMap) {
 
         StringJoiner stringJoiner = new StringJoiner(",");
 
@@ -106,5 +106,6 @@ public class DbHandler {
             throw new IllegalStateException("Failed to close db.");
         }
     }
+
 
 }
