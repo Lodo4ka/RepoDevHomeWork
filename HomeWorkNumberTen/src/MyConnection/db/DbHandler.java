@@ -1,10 +1,10 @@
 package MyConnection.db;
 
-import com.sun.org.apache.xpath.internal.operations.String;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 
 /**
@@ -16,7 +16,7 @@ public class DbHandler {
     Connection connection;
 
 
-    public DbHandler(final java.lang.String connectionString) {
+    public DbHandler(final String connectionString) {
         try {
             this.connection = DriverManager.getConnection(connectionString);
             this.statement = connection.createStatement();
@@ -25,39 +25,52 @@ public class DbHandler {
         }
     }
 
-    public void execute_Insert(String table, List<String> values) {
+    public void insertInto(String table, Map<String, String> columnValueMap) {
 
-        StringJoiner stringJoiner = new StringJoiner(",");
+        StringJoiner columnJoiner = new StringJoiner(",");
+        StringJoiner valuesJoiner = new StringJoiner(",");
 
-        for (String value : values
-                ) {
-            stringJoiner.add("" + value + "");
 
+        Set<Map.Entry<String, String>> entries = columnValueMap.entrySet();
+
+
+        for (Map.Entry<String, String> entry : entries) {
+            columnJoiner.add(entry.getKey());
+            valuesJoiner.add("'" + entry.getValue() + "'");
         }
+
+
         try {
-            statement.execute("INSERT INTO " + table + " VALUES (" + stringJoiner.toString() + ")");
+            String sqlQuery = "INSERT INTO " + table + "( " + columnJoiner.toString() + ") VALUES (" + valuesJoiner.toString() + ")";
+            System.out.println("querying Db" + sqlQuery);
+            statement.execute(sqlQuery);
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to execute inert query. Reason: " + e.getMessage());
         }
     }
 
 
-    public void execute_createTable(java.lang.String tableName, Map namesTypesMap) {
+    public void createTable(String tableName, Map<String, String> namesTypesMap) {
 
         StringJoiner stringJoiner = new StringJoiner(",");
+        Set<Map.Entry<String, String>> entries = namesTypesMap.entrySet();
 
-        for (Object value : namesTypesMap.entrySet()) {
-            stringJoiner.add("" + value + "");
+        for (Map.Entry<String, String> entry : entries) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            stringJoiner.add(key + " " + value);
         }
 
         try {
-            statement.execute("CREATE TABLE " + tableName + " VAlUES (" + stringJoiner.toString() + ")");
+            String sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + stringJoiner.toString() + ")";
+            System.out.println(sqlQuery);
+            statement.execute(sqlQuery);
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to create table. Reason: " + e.getMessage());
         }
     }
 
-    public void execute_dropTableIfExists(java.lang.String tableName) {
+    public void dropTableIfExists(String tableName) {
 
         try {
             statement.execute("DROP  TABLE IF EXISTS " + tableName);
@@ -67,35 +80,30 @@ public class DbHandler {
 
     }
 
-    ResultSet execute_select(List columns, String tableName, Map whereConditionMap) {
+    public ResultSet select(List<String> columns, String tableName, Map<String, String> whereConditionMap) {
 
 
-        ResultSet resultSet;
         StringJoiner stringJoiner1 = new StringJoiner(",");
-
-        for (Object val: columns
-             ) {
-            stringJoiner1.add("" + val + "");
-
+        for (String column : columns) {
+            stringJoiner1.add(column);
         }
 
-        StringJoiner stringJoiner2 = new StringJoiner(",");
 
+        StringJoiner stringJoiner2 = new StringJoiner(" AND ");
 
-
-        for (Object value : whereConditionMap.entrySet()
-                ) {
-            stringJoiner2.add("" + value + "");
+        Set<Map.Entry<String, String>> entries = whereConditionMap.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            stringJoiner2.add(entry.getKey() + "='" + entry.getValue() + "'");
         }
 
 
         try {
-          resultSet = statement.executeQuery("SELECT " + stringJoiner1.toString() + " FROM " + tableName + " WHERE " + stringJoiner2.toString());
+            String sqlQuery = "SELECT " + stringJoiner1.toString() + " FROM " + tableName + " WHERE " + stringJoiner2.toString();
+            System.out.println(sqlQuery);
+            return statement.executeQuery(sqlQuery);
         } catch (SQLException e) {
             throw new IllegalStateException("Filed to select command. Reason: " + e.getMessage());
         }
-
-        return resultSet;
     }
 
 
