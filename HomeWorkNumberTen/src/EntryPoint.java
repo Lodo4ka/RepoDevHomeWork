@@ -47,10 +47,21 @@ public class EntryPoint {
                 if(inputOption == 1){
                     List<String> columnlist = Arrays.asList("id", "name", "description");
                     HashMap<String, String> conditionMap = new HashMap<>();
-                    dbHandler.select(columnlist, "products", conditionMap);
+                    ResultSet products = dbHandler.select(columnlist, "products", conditionMap);
+
+                    String string = products.toString();
+                    System.out.println(string);
                 }
                 else if (inputOption == 2){
-
+                    System.out.println("Please input id products");
+                    String id = reader.readLine();
+                    System.out.println("Please input amount products");
+                    String amount = reader.readLine();
+                    List<String> list = Arrays.asList("UserId", "productId", "amount", "orderDate");
+                    HashMap<String, String> conditionMap = new HashMap<>();
+                    ResultSet order = dbHandler.select(list, "Order", conditionMap);
+                    String string = order.toString();
+                    System.out.println(string);
                 }
             };
         } else {
@@ -58,6 +69,11 @@ public class EntryPoint {
             String msg = "Illegal Argument of this application";
             throw new IllegalArgumentException(msg);
         }
+    }
+
+    private static void orderVerification() {
+
+
     }
 
     public static void createTableForPerson(DbHandler dbHandler) {
@@ -123,8 +139,8 @@ public class EntryPoint {
 
         HashMap<String, String> orderColumnMap = new HashMap<>();
         orderColumnMap.put("id", "integer");
-        orderColumnMap.put("name", "text");
-        orderColumnMap.put("description", "text");
+        orderColumnMap.put("UserId", "integer");
+        orderColumnMap.put("productID", "integer");
         orderColumnMap.put("amount", "integer");
         orderColumnMap.put("orderDate", "text");
 
@@ -134,20 +150,20 @@ public class EntryPoint {
         LocalDateTime now = LocalDateTime.now();
 
         orderInsertMap.put("id", "0");
-        orderInsertMap.put("name", "Vasya");
-        orderInsertMap.put("description", "I m Vasya");
+        orderInsertMap.put("UserId", "01");
+        orderInsertMap.put("productID", "0");
         orderInsertMap.put("amount", "1");
         orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
 
         orderInsertMap.put("id", "1");
-        orderInsertMap.put("name", "Petya");
-        orderInsertMap.put("description", "I m Petya");
+        orderInsertMap.put("UserId", "02");
+        orderInsertMap.put("productID", "1");
         orderInsertMap.put("amount", "2");
         orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
 
         orderInsertMap.put("id", "2");
-        orderInsertMap.put("name", "Vova");
-        orderInsertMap.put("description", "I m Vova");
+        orderInsertMap.put("UserId", "03");
+        orderInsertMap.put("productID", "2");
         orderInsertMap.put("amount", "3");
         orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
 
