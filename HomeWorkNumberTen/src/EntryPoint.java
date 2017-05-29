@@ -1,15 +1,15 @@
 import MyConnection.db.DbHandler;
-import org.sqlite.JDBC;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lodo4ka on 21/05/2017.
@@ -36,15 +36,33 @@ public class EntryPoint {
         // load the sqlite-JDBC driver using the current class loader
         DbHandler dbHandler = new DbHandler("jdbc:sqlite:HomeWorkNumberTen/DB/MYDataBase.sqlite");
         createTable(dbHandler);
+
         if (inputOption == 1) {
             precessRegistration(reader, dbHandler);
         } else if (inputOption == 2) {
-            processAuthorization(reader, dbHandler);
+            if(processAuthorization(reader, dbHandler)){
+                createTableForPerson(dbHandler);
+                System.out.println("If you want to see all products then press 1" +
+                        "If you want to order then press 2");
+                if(inputOption == 1){
+                    List<String> columnlist = Arrays.asList("id", "name", "description");
+                    HashMap<String, String> conditionMap = new HashMap<>();
+                    dbHandler.select(columnlist, "products", conditionMap);
+                }
+                else if (inputOption == 2){
+
+                }
+            };
         } else {
 
             String msg = "Illegal Argument of this application";
             throw new IllegalArgumentException(msg);
         }
+    }
+
+    public static void createTableForPerson(DbHandler dbHandler) {
+        createTableProducts(dbHandler);
+        createTableOrder(dbHandler);
     }
 
     public static void createTable(DbHandler dbHandler) {
@@ -53,24 +71,87 @@ public class EntryPoint {
         shopColumnMap.put("email", "text");
         shopColumnMap.put("password", "text");
 
-        dbHandler.createTable("shop", shopColumnMap);
+        dbHandler.createTable("person", shopColumnMap);
     }
 
-    public static void processAuthorization(BufferedReader reader, DbHandler dbHandler) throws IOException {
+    public static boolean processAuthorization(BufferedReader reader, DbHandler dbHandler) throws IOException {
+
+
         System.out.println("Welcome to authorized\nWrite your email");
-        String email = reader.readLine();
-        System.out.println("Write your password");
-        String password = reader.readLine();
+            String email = reader.readLine();
+            System.out.println("Write your password");
+            String password = reader.readLine();
 
-        List<String> columnList = Arrays.asList("name", "email", "password");
-        HashMap<String, String> conditionMap = new HashMap<>();
-        conditionMap.put("email", email);
-        conditionMap.put("password", password);
-        ResultSet resultSet = dbHandler.select(columnList, "shop", conditionMap);
+            List<String> columnList = Arrays.asList("name", "email", "password");
+            HashMap<String, String> conditionMap = new HashMap<>();
+            conditionMap.put("email", email);
+            conditionMap.put("password", password);
+            ResultSet resultSet = dbHandler.select(columnList, "person", conditionMap);
 
-        String name = getName(resultSet);
+            String name = getName(resultSet);
 
-        System.out.println("Hello, " + name + "!");
+            System.out.println("Hello, " + name + "!");
+            return true;
+    }
+
+
+     public static void createTableProducts(DbHandler dbHandler) {
+        HashMap<String, String> productsColumnMAp = new HashMap<>();
+        productsColumnMAp.put("id", "integer");
+        productsColumnMAp.put("name", "text");
+        productsColumnMAp.put("description", "text");
+
+        dbHandler.createTable("products", productsColumnMAp);
+
+        HashMap<String, String> productsInsertMap = new HashMap<>();
+        productsInsertMap.put("id", "0");
+        productsInsertMap.put("name", "Vasya");
+        productsInsertMap.put("description", "I m Vasya");
+
+         productsInsertMap.put("id", "1");
+         productsInsertMap.put("name", "Petya");
+         productsInsertMap.put("description", "I m Petya");
+
+         productsInsertMap.put("id", "2");
+         productsInsertMap.put("name", "Vova");
+         productsInsertMap.put("description", "I m Vova");
+
+        dbHandler.insertInto("products", productsInsertMap);
+    }
+
+    public static void createTableOrder(DbHandler dbHandler) {
+
+        HashMap<String, String> orderColumnMap = new HashMap<>();
+        orderColumnMap.put("id", "integer");
+        orderColumnMap.put("name", "text");
+        orderColumnMap.put("description", "text");
+        orderColumnMap.put("amount", "integer");
+        orderColumnMap.put("orderDate", "text");
+
+        dbHandler.createTable("Order", orderColumnMap);
+
+        HashMap<String, String> orderInsertMap = new HashMap<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        orderInsertMap.put("id", "0");
+        orderInsertMap.put("name", "Vasya");
+        orderInsertMap.put("description", "I m Vasya");
+        orderInsertMap.put("amount", "1");
+        orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
+
+        orderInsertMap.put("id", "1");
+        orderInsertMap.put("name", "Petya");
+        orderInsertMap.put("description", "I m Petya");
+        orderInsertMap.put("amount", "2");
+        orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
+
+        orderInsertMap.put("id", "2");
+        orderInsertMap.put("name", "Vova");
+        orderInsertMap.put("description", "I m Vova");
+        orderInsertMap.put("amount", "3");
+        orderInsertMap.put("orderDate", Timestamp.valueOf(now).toString());
+
+        dbHandler.insertInto("Order", orderInsertMap);
     }
 
     public static String getName(ResultSet resultSet) {
@@ -97,7 +178,7 @@ public class EntryPoint {
         columnValueMAp.put("email", email);
         columnValueMAp.put("password", pass);
 
-        dbHandler.insertInto("shop", columnValueMAp);
-        System.out.println("Registration succed!");
+        dbHandler.insertInto("person", columnValueMAp);
+        System.out.println("Registration succeed!");
     }
 }
