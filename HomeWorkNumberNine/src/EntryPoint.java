@@ -17,10 +17,6 @@ public class EntryPoint {
         chooseVersionApplication(reader, v);
     }
 
-
-
-
-
     public static void chooseVersionApplication(BufferedReader reader, int v) throws IOException {
         if(v == 1){
             System.out.println("Write file name");
