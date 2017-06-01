@@ -42,7 +42,7 @@ public class EntryPoint {
         if (inputOption == 1) {
             precessRegistration(reader, dbHandler);
         } else if (inputOption == 2) {
-            processAuthorization(reader, dbHandler);
+            String name = processAuthorization(reader, dbHandler);
 
             System.out.println("If you want to see products press 1:\nIf you want to do order press 2:");
             int choice = Integer.parseInt(reader.readLine());
@@ -50,7 +50,7 @@ public class EntryPoint {
                 if (choice == 1) {
                     processShowAllProduct(reader, dbHandler);
                 } else if (choice == 2) {
-                    processOrdering(reader, dbHandler);
+                    processOrdering(name,reader, dbHandler);
                 }
             }
         } else {
@@ -59,27 +59,29 @@ public class EntryPoint {
         }
     }
 
-    public static void processOrdering(BufferedReader reader, DbHandler dbHandler) throws IOException {
+    public static void processOrdering(String name,BufferedReader reader, DbHandler dbHandler) throws IOException {
         System.out.println("Please input your id products");
 
         String id = reader.readLine();
         System.out.println("Please input your amount products");
         String amount = reader.readLine();
 
-        List<String> list = Arrays.asList("UserId", "productID", "amount", "orderDate");
+        List<String> list = Arrays.asList("name", "description","amount", "orderDate");
         HashMap<String, String> conditionMap = new HashMap<>();
         conditionMap.put("productID", id);
         conditionMap.put("amount", amount);
 
-        ResultSet resultSet = dbHandler.selectWithInnerJoin(list,"products", "OrderInfo", "id", "productID", conditionMap);
+        ResultSet resultSet = dbHandler.selectWithInnerJoin(list,"products", "OrderInfo",
+                "id", "productID", conditionMap);
 
         StringJoiner tableJoiner = new StringJoiner("\n");
 
         try{
             while (resultSet.next()){
                 StringJoiner rowJoiner = new StringJoiner("\t\t");
-                rowJoiner.add(resultSet.getString("UserId")).add(resultSet.getString("productID")).
-                        add(resultSet.getString("amount")).add(resultSet.getString("orderDate"));
+                rowJoiner.add(resultSet.getString("name")).
+                        add(resultSet.getString("amount")).add(resultSet.getString("orderDate")).
+                        add(resultSet.getString("description"));
                 tableJoiner.add(rowJoiner.toString());
             }
         }
@@ -88,7 +90,8 @@ public class EntryPoint {
         }
 
 
-        System.out.println(tableJoiner);
+        System.out.println("name:\t\t" + "product:\t" + "amount:\t\t" + "date:\t\t" + "description:");
+        System.out.println(name + "\t\t" + tableJoiner);
     }
 
     private static void processShowAllProduct(BufferedReader reader, DbHandler dbHandler) {
@@ -152,7 +155,7 @@ public class EntryPoint {
 
     }
 
-    public static void processAuthorization(BufferedReader reader, DbHandler dbHandler) throws IOException {
+    public static String processAuthorization(BufferedReader reader, DbHandler dbHandler) throws IOException {
 
 
         System.out.println("Welcome to authorized\nWrite your email");
@@ -168,7 +171,9 @@ public class EntryPoint {
 
         String name = getName(resultSet);
 
+
         System.out.println("Hello, " + name + "!");
+        return name;
     }
 
 

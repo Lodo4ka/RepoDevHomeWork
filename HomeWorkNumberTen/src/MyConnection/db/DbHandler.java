@@ -97,7 +97,7 @@ public class DbHandler {
         }
 
         try {
-            String sqlQuery = "SELECT " + stringJoiner.toString() + " FROM " + tableName1
+            String sqlQuery = "SELECT *"+ " FROM " + tableName1
                     + " INNER JOIN " + tableName2+ " ON " + tableName1 + "." + condition1 + " = " + tableName2 +"." + condition2
                     +  " WHERE " + stringJoiner2.toString();
             System.out.println(sqlQuery);
