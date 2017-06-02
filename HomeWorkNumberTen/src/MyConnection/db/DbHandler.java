@@ -80,6 +80,34 @@ public class DbHandler {
 
     }
 
+
+    public ResultSet selectWithInnerJoin( List<String> columns ,String tableName1, String tableName2,
+                                         String condition1, String condition2,Map<String, String> whereConditionMap) {
+
+        StringJoiner stringJoiner = new StringJoiner(",");
+        for (String column : columns) {
+            stringJoiner.add(column);
+        }
+
+
+        StringJoiner stringJoiner2 = new StringJoiner(" AND ");
+        Set<Map.Entry<String, String>> entries = whereConditionMap.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            stringJoiner2.add(entry.getKey() + "='" + entry.getValue() + "'");
+        }
+
+        try {
+            String sqlQuery = "SELECT " + stringJoiner.toString() + " FROM " + tableName1
+                    + " INNER JOIN " + tableName2+ " ON " + tableName1 + "." + condition1 + " = " + tableName2 +"." + condition2
+                    +  " WHERE " + stringJoiner2.toString();
+            System.out.println(sqlQuery);
+            return statement.executeQuery(sqlQuery);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Filed to select command. Reason: " + e.getMessage());
+        }
+
+    }
+
     public ResultSet select(List<String> columns, String tableName, Map<String, String> whereConditionMap) {
 
 
@@ -106,6 +134,22 @@ public class DbHandler {
         }
     }
 
+    public ResultSet selectWithoutCondition(List<String> columns, String tableName) {
+
+
+        StringJoiner stringJoiner1 = new StringJoiner(",");
+        for (String column : columns) {
+            stringJoiner1.add(column);
+        }
+
+        try {
+            String sqlQuery = "SELECT " + stringJoiner1.toString() + " FROM " + tableName;
+            System.out.println(sqlQuery);
+            return statement.executeQuery(sqlQuery);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Filed to select command. Reason: " + e.getMessage());
+        }
+    }
 
     public void close() {
         try {
