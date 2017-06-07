@@ -1,9 +1,12 @@
-import controller.LoginController;
+import controller.CheckingLogin;
+import controller.ProductTableController;
+import controller.RegistrationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -19,6 +22,7 @@ public class EntryPoint extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+
         FXMLLoader firstFXMLLoader = new FXMLLoader();
 
         firstFXMLLoader.setLocation(this.getClass().getResource("view/login.fxml"));
@@ -30,12 +34,27 @@ public class EntryPoint extends Application {
         AnchorPane secondPane = (AnchorPane) secondFXMLLoader.load();
         Scene secondScene = new Scene(secondPane);
 
-        LoginController loginController = (LoginController) firstFXMLLoader.getController();
-        loginController.setSecondScene(secondScene);
+        FXMLLoader thirdFXMLLoader = new FXMLLoader();
+        thirdFXMLLoader.setLocation(getClass().getResource("view/productTable.fxml"));
+        Pane thirdPane = (Pane)thirdFXMLLoader.load();
+        Scene thirdScene = new Scene(thirdPane);
+
+        FXMLLoader fourthFXMLLoader = new FXMLLoader();
+        fourthFXMLLoader.setLocation(getClass().getResource("view/orderInfo.fxml"));
+        AnchorPane fourthPane = (AnchorPane)fourthFXMLLoader.load();
+        Scene fourthScene = new Scene(fourthPane);
+
+        RegistrationController registrationController = (RegistrationController) firstFXMLLoader.getController();
+        registrationController.setSecondScene(secondScene);
+
+        CheckingLogin checkingLogin = (CheckingLogin)secondFXMLLoader.getController();
+        checkingLogin.setThirdScene(thirdScene);
+
+        ProductTableController productTableController = (ProductTableController)thirdFXMLLoader.getController();
+        productTableController.setFourthScene(fourthScene);
 
         primaryStage.setScene(firstScene);
         primaryStage.setTitle("Welcome");
         primaryStage.show();
-
     }
 }

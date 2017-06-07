@@ -1,11 +1,8 @@
-package db;
+package repository.db;
 
 
 import java.sql.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 
 /**
  * Created by lodo4ka on 20/05/2017.
@@ -14,15 +11,27 @@ public class DbHandler {
 
     Statement statement;
     Connection connection;
+    private static DbHandler instance;
 
 
-    public DbHandler(final String connectionString) {
+    private DbHandler(final String connectionString) {
         try {
             this.connection = DriverManager.getConnection(connectionString);
             this.statement = connection.createStatement();
         } catch (SQLException e) {
             throw new IllegalStateException("Database Exception. Reason: " + e.getMessage());
         }
+    }
+
+    public static DbHandler getInstance() {
+        if(instance ==null){
+            instance = new DbHandler("jdbc:sqlite:HomeWorkNumberTwelve/DB/registration.sqlite");
+            HashMap<String, String> columnMap = new HashMap<>();
+            columnMap.put("name", "text");
+            columnMap.put("password", "text");
+            instance.createTable("user", columnMap);
+        }
+        return instance;
     }
 
     public void insertInto(String table, Map<String, String> columnValueMap) {
@@ -108,14 +117,7 @@ public class DbHandler {
 
     }
 
-    public ResultSet select(List<String> columns, String tableName, Map<String, String> whereConditionMap) {
-
-
-        StringJoiner stringJoiner1 = new StringJoiner(",");
-        for (String column : columns) {
-            stringJoiner1.add(column);
-        }
-
+    public ResultSet select(String tableName, Map<String, String> whereConditionMap) {
 
         StringJoiner stringJoiner2 = new StringJoiner(" AND ");
 
@@ -126,7 +128,7 @@ public class DbHandler {
 
 
         try {
-            String sqlQuery = "SELECT " + stringJoiner1.toString() + " FROM " + tableName + " WHERE " + stringJoiner2.toString();
+            String sqlQuery = "SELECT  * FROM " + tableName + " WHERE " + stringJoiner2.toString();
             System.out.println(sqlQuery);
             return statement.executeQuery(sqlQuery);
         } catch (SQLException e) {
@@ -158,6 +160,4 @@ public class DbHandler {
             throw new IllegalStateException("Failed to close db.");
         }
     }
-
-
 }
