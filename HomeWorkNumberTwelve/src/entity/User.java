@@ -5,8 +5,12 @@ package entity;
  */
 public class User {
 
+
+
     String name;
     String password;
+
+
 
     public String getName() {
         return name;
@@ -20,6 +24,7 @@ public class User {
         this.name = name;
         this.password = password;
     }
+
 
     @Override
     public String toString() {

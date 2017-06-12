@@ -30,20 +30,36 @@ public class DbHandler {
             columnMap.put("name", "text");
             columnMap.put("password", "text");
             instance.createTable("user", columnMap);
+
+            HashMap<String, String> productColumnMap = new HashMap<>();
+            productColumnMap.put("id", "integer");
+            productColumnMap.put("name", "text");
+            productColumnMap.put("description", "text");
+            productColumnMap.put("type", "text");
+            productColumnMap.put("price", "integer");
+            instance.createTable("product", productColumnMap);
+
+            HashMap<String, String> orderInfoColumn = new HashMap<>();
+            orderInfoColumn.put("id", "integer");
+            orderInfoColumn.put("name", "text");
+            orderInfoColumn.put("product", "text");
+            orderInfoColumn.put("amount", "integer");
+            orderInfoColumn.put("price", "integer");
+            instance.createTable("orderInfo", orderInfoColumn);
         }
         return instance;
     }
 
-    public void insertInto(String table, Map<String, String> columnValueMap) {
+    public void insertInto(String table, Map<String, Object> columnValueMap) {
 
         StringJoiner columnJoiner = new StringJoiner(",");
         StringJoiner valuesJoiner = new StringJoiner(",");
 
 
-        Set<Map.Entry<String, String>> entries = columnValueMap.entrySet();
+        Set<Map.Entry<String, Object>> entries = columnValueMap.entrySet();
 
 
-        for (Map.Entry<String, String> entry : entries) {
+        for (Map.Entry<String, Object> entry : entries) {
             columnJoiner.add(entry.getKey());
             valuesJoiner.add("'" + entry.getValue() + "'");
         }
@@ -117,12 +133,12 @@ public class DbHandler {
 
     }
 
-    public ResultSet select(String tableName, Map<String, String> whereConditionMap) {
+    public ResultSet select(String tableName, Map<Object, Object> whereConditionMap) {
 
         StringJoiner stringJoiner2 = new StringJoiner(" AND ");
 
-        Set<Map.Entry<String, String>> entries = whereConditionMap.entrySet();
-        for (Map.Entry<String, String> entry : entries) {
+        Set<Map.Entry<Object, Object>> entries = whereConditionMap.entrySet();
+        for (Map.Entry<Object, Object> entry : entries) {
             stringJoiner2.add(entry.getKey() + "='" + entry.getValue() + "'");
         }
 
@@ -136,16 +152,11 @@ public class DbHandler {
         }
     }
 
-    public ResultSet selectWithoutCondition(List<String> columns, String tableName) {
+    public ResultSet selectWithoutCondition(String tableName) {
 
-
-        StringJoiner stringJoiner1 = new StringJoiner(",");
-        for (String column : columns) {
-            stringJoiner1.add(column);
-        }
 
         try {
-            String sqlQuery = "SELECT " + stringJoiner1.toString() + " FROM " + tableName;
+            String sqlQuery = "SELECT *" + " FROM " + tableName;
             System.out.println(sqlQuery);
             return statement.executeQuery(sqlQuery);
         } catch (SQLException e) {

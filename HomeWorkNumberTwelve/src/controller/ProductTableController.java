@@ -12,6 +12,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import repository.db.DbHandler;
+import service.ProductService;
+
+import java.util.List;
 
 /**
  * Created by lodo4ka on 07/06/2017.
@@ -19,13 +23,16 @@ import javafx.stage.Stage;
 public class ProductTableController {
 
 
+
+    ProductService productService = new ProductService();
+
     @FXML
     private TableView<Product> productTable;
 
     private Scene fourthScene;
 
 
-    public void initialize(){
+    public void initialize() {
         TableColumn nameColumn = createColumn("Name", "name");
         TableColumn descColumn = createColumn("Description", "description");
         TableColumn typeColumn = createColumn("Type", "type");
@@ -34,10 +41,11 @@ public class ProductTableController {
         ObservableList columns = productTable.getColumns();
         columns.addAll(nameColumn, descColumn, typeColumn, priceColumn);
 
-        ObservableList<Product> productList = FXCollections.observableArrayList();
-        productList.add(new Product("Nokia", "model Nokia 3310", "phone", "20$"));
-        productList.add(new Product("Iphone", "model Iphone 7", "smartphone", "700$"));
-        productList.add(new Product("Samsung", "model galaxy tab 3", "tab", "500$"));
+        List<Product> list = productService.getProducts();
+        ObservableList<Product> productList = FXCollections.observableArrayList(list);
+//        productList.add(new Product("Nokia", "model Nokia 3310", "phone", "20$"));
+//        productList.add(new Product("Iphone", "model Iphone 7", "smartphone", "700$"));
+//        productList.add(new Product("Samsung", "model galaxy tab 3", "tab", "500$"));
 
         productTable.setItems(productList);
 
@@ -57,7 +65,10 @@ public class ProductTableController {
         Product selectedItem = productTable.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
 
-        Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+
+        productService.addOrder(selectedItem.getId());
+
+        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(fourthScene);
     }
 
