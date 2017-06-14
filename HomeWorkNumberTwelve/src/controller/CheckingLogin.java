@@ -2,25 +2,23 @@ package controller;
 
 import entity.User;
 import exception.ProductShopException;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import repository.db.DbHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import service.LoginService;
+import utils.Context;
 
-import java.net.URL;
-import java.sql.ResultSet;
+
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+
 
 
 /**
@@ -41,10 +39,6 @@ public class CheckingLogin {
     Label resultLabelS;
 
 
-    public void setThirdScene(Scene thirdScene) {
-        this.thirdScene = thirdScene;
-    }
-
     @FXML
     public void btnCheck(ActionEvent actionEvent) throws SQLException {
 
@@ -57,12 +51,22 @@ public class CheckingLogin {
             User user = new User(name, pass);
 
 
-            boolean authorised = loginService.authorised(user);
+            int userId = loginService.authorised(user);
 
-            if (authorised) {
+            if (userId > 0) {
+                Context.setUser(user);
                 resultLabelS.setText("User is authorised");
-                Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-                primaryStage.setScene(thirdScene);
+                try {
+                    Parent home_page_parent = FXMLLoader.load(getClass().getResource("/view/productTable.fxml"));
+                    Scene home_page_scene = new Scene(home_page_parent);
+                    Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    app_stage.hide();
+                    app_stage.setScene(home_page_scene);
+                    app_stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 resultLabelS.setText("Login or password incorrect");
             }

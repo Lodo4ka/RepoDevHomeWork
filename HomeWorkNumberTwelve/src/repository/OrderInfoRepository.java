@@ -19,7 +19,7 @@ public class OrderInfoRepository {
     private DbHandler dbHandler = DbHandler.getInstance();
 
 
-    public List<OrderInfo> selectInfo() {
+    public List<OrderInfo> selectOrders() {
         ResultSet resultSet = dbHandler.selectWithoutCondition("orderInfo");
 
         LinkedList<OrderInfo> orderInfos = new LinkedList<>();
@@ -28,7 +28,7 @@ public class OrderInfoRepository {
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                int product = resultSet.getInt("product");
+                int product = resultSet.getInt("productId");
                 int amount = resultSet.getInt("amount");
                 int price = resultSet.getInt("price");
                 OrderInfo orderInfo = new OrderInfo(id, name, product, amount, price);
@@ -40,14 +40,15 @@ public class OrderInfoRepository {
         return orderInfos;
     }
 
-    public OrderInfo insertOrderInfo(Product product, User user) {
+    public void addOrder(final Integer productId, final User user, final int amount, final int price) {
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", user.getName());
-        map.put("product", product.getId());
+        HashMap<String, Object> columnValueMap = new HashMap<>();
 
-        map.put("price", product.getPrice() * ); //TODO add amount product from field amount
-        dbHandler.insertInto("orderInfo", map);
+        columnValueMap.put("amount", amount);
+        columnValueMap.put("productId", productId);
+        columnValueMap.put("price", price);
+        columnValueMap.put("name", user.getName());
 
+        dbHandler.insertInto("orderInfo", columnValueMap);
     }
 }

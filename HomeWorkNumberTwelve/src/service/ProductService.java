@@ -15,16 +15,11 @@ public class ProductService {
 
     ProductRepository productRepository = new ProductRepository();
 
-    OrderInfoRepository orderInfoRepository = new OrderInfoRepository();
 
 
+    public List<Product> getAll() {
 
-    public List<Product> getProducts() {
-        return productRepository.selectAllProducts();
-    }
 
-    public void addOrder(Integer id) {
-        Product product = productRepository.getById(id);
-        OrderInfo orderInfo = orderInfoRepository.insertOrderInfo(product, );
+        return productRepository.getAll();
     }
 }

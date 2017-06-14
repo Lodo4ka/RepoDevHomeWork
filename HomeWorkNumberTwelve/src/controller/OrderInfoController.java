@@ -20,7 +20,7 @@ public class OrderInfoController {
     OrderInfoService orderInfoService = new OrderInfoService();
 
     @FXML
-    TableView<OrderInfo> orderTable = new TableView<>();
+    TableView<OrderInfo> tabView;
 
 
 
@@ -32,18 +32,17 @@ public class OrderInfoController {
         TableColumn amount = createColumn("Amount", "amount");
         TableColumn price = createColumn("Price", "price");
 
-        ObservableList columns = orderTable.getColumns();
+        ObservableList columns = tabView.getColumns();
         columns.addAll(id, name, product, amount, price);
 
         List<OrderInfo> infoList = orderInfoService.getInfo();
         ObservableList<OrderInfo> orderInfosList = FXCollections.observableArrayList(infoList);
 
-        orderTable.setItems(orderInfosList);
-
+        tabView.setItems(orderInfosList);
     }
 
-    private TableColumn createColumn(final String nameColumn, final String entityFieldName) {
-        TableColumn column = new TableColumn();
+    public TableColumn createColumn(final String nameColumn, String entityFieldName) {
+        TableColumn column = new TableColumn(nameColumn);
         column.setMinWidth(100);
         column.setCellValueFactory(new PropertyValueFactory<>(entityFieldName));
         return column;

@@ -10,7 +10,7 @@ public class LoginService {
 
     private UserRepository userRepository = new UserRepository();
 
-    public boolean authorised(final User user) {
+    public int authorised(final User user) {
 
 
         return userRepository.exists(user);

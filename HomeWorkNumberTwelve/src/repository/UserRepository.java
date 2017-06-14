@@ -18,14 +18,13 @@ public class UserRepository {
     public void create(final User user) {
 
 
-        HashMap<String, String> columnMap = new HashMap<>();
+        HashMap<String, Object> columnMap = new HashMap<>();
         columnMap.put("name", user.getName());
         columnMap.put("password", user.getPassword());
         dbHandler.insertInto("user", columnMap);
     }
 
-    public boolean exists(final User user) {
-
+    public int exists(final User user) {
         HashMap<String, String> conditionMap = new HashMap<>();
         conditionMap.put("name", user.getName());
         conditionMap.put("password", user.getPassword());
@@ -33,9 +32,9 @@ public class UserRepository {
         ResultSet resultSet = dbHandler.select("user", conditionMap);
 
         try {
-            return resultSet.next();
+            return resultSet.getInt("id");
         } catch (SQLException e) {
-            throw new DatabaseException("Failed to check if user" + user.toString() + "exists. Reason;" + e.getMessage());
+           return -1;
         }
 
     }

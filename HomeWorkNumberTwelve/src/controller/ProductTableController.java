@@ -5,16 +5,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import repository.db.DbHandler;
+import service.OrderInfoService;
 import service.ProductService;
+import utils.Context;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,14 +26,16 @@ import java.util.List;
  */
 public class ProductTableController {
 
-
-
-    ProductService productService = new ProductService();
-
     @FXML
     private TableView<Product> productTable;
 
-    private Scene fourthScene;
+    @FXML
+   private Spinner<Integer> spin;
+
+
+
+    ProductService productService = new ProductService();
+    OrderInfoService orderInfoService = new OrderInfoService();
 
 
     public void initialize() {
@@ -41,15 +47,11 @@ public class ProductTableController {
         ObservableList columns = productTable.getColumns();
         columns.addAll(nameColumn, descColumn, typeColumn, priceColumn);
 
-        List<Product> list = productService.getProducts();
-        ObservableList<Product> productList = FXCollections.observableArrayList(list);
-//        productList.add(new Product("Nokia", "model Nokia 3310", "phone", "20$"));
-//        productList.add(new Product("Iphone", "model Iphone 7", "smartphone", "700$"));
-//        productList.add(new Product("Samsung", "model galaxy tab 3", "tab", "500$"));
 
+        List<Product> allProducts = productService.getAll();
+
+        ObservableList<Product> productList = FXCollections.observableArrayList(allProducts);
         productTable.setItems(productList);
-
-
     }
 
     public TableColumn createColumn(final String nameColumn, String entityFieldName) {
@@ -66,10 +68,22 @@ public class ProductTableController {
         System.out.println(selectedItem);
 
 
-        productService.addOrder(selectedItem.getId());
+        orderInfoService.addOrder(selectedItem, Context.getUser(), spin.getValue());
 
-        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(fourthScene);
+
+
+        try {
+            Parent home_page_parent = FXMLLoader.load(getClass().getResource("/view/orderInfo.fxml"));
+            Scene home_page_scene = new Scene(home_page_parent);
+            Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(home_page_scene);
+            app_stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -78,9 +92,5 @@ public class ProductTableController {
         Product selectedItem = productTable.getSelectionModel().getSelectedItem();
         ObservableList<Product> items = productTable.getItems();
         items.remove(selectedItem);
-    }
-
-    public void setFourthScene(Scene fourthScene) {
-        this.fourthScene = fourthScene;
     }
 }

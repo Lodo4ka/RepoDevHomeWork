@@ -52,9 +52,12 @@ public class RegistrationController {
 
            registrationService.register(user);
 
-           Stage primaryStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-           primaryStage.setScene(secondScene);
-
+           Parent home_page_parent = FXMLLoader.load(getClass().getResource("/view/checkingLogin.fxml"));
+           Scene home_page_scene = new Scene(home_page_parent);
+           Stage app_stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+           app_stage.hide();
+           app_stage.setScene(home_page_scene);
+           app_stage.show();
 
        }
        catch (ProductShopException e){

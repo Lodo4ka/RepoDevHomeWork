@@ -25,14 +25,16 @@ public class DbHandler {
 
     public static DbHandler getInstance() {
         if(instance ==null){
+
             instance = new DbHandler("jdbc:sqlite:HomeWorkNumberTwelve/DB/registration.sqlite");
+
+
             HashMap<String, String> columnMap = new HashMap<>();
             columnMap.put("name", "text");
             columnMap.put("password", "text");
             instance.createTable("user", columnMap);
 
             HashMap<String, String> productColumnMap = new HashMap<>();
-            productColumnMap.put("id", "integer");
             productColumnMap.put("name", "text");
             productColumnMap.put("description", "text");
             productColumnMap.put("type", "text");
@@ -40,9 +42,8 @@ public class DbHandler {
             instance.createTable("product", productColumnMap);
 
             HashMap<String, String> orderInfoColumn = new HashMap<>();
-            orderInfoColumn.put("id", "integer");
             orderInfoColumn.put("name", "text");
-            orderInfoColumn.put("product", "text");
+            orderInfoColumn.put("productId", "integer");
             orderInfoColumn.put("amount", "integer");
             orderInfoColumn.put("price", "integer");
             instance.createTable("orderInfo", orderInfoColumn);
@@ -50,11 +51,10 @@ public class DbHandler {
         return instance;
     }
 
-    public void insertInto(String table, Map<String, Object> columnValueMap) {
+    public void insertInto(String table, HashMap<String, Object> columnValueMap) {
 
         StringJoiner columnJoiner = new StringJoiner(",");
         StringJoiner valuesJoiner = new StringJoiner(",");
-
 
         Set<Map.Entry<String, Object>> entries = columnValueMap.entrySet();
 
@@ -87,7 +87,7 @@ public class DbHandler {
         }
 
         try {
-            String sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + stringJoiner.toString() + ")";
+            String sqlQuery = "CREATE TABLE IF NOT EXISTS " + tableName + " ( id INTEGER PRIMARY KEY AUTOINCREMENT, " + stringJoiner.toString() + ")";
             System.out.println(sqlQuery);
             statement.execute(sqlQuery);
         } catch (SQLException e) {
@@ -133,12 +133,12 @@ public class DbHandler {
 
     }
 
-    public ResultSet select(String tableName, Map<Object, Object> whereConditionMap) {
+    public ResultSet select(String tableName, HashMap<String, String> whereConditionMap) {
 
         StringJoiner stringJoiner2 = new StringJoiner(" AND ");
 
-        Set<Map.Entry<Object, Object>> entries = whereConditionMap.entrySet();
-        for (Map.Entry<Object, Object> entry : entries) {
+        Set<Map.Entry<String, String>> entries = whereConditionMap.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
             stringJoiner2.add(entry.getKey() + "='" + entry.getValue() + "'");
         }
 
